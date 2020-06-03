@@ -1,9 +1,3 @@
-# report.py
-#
-# Exercise 2.4
-
-import csv
-
 
 def read_portfolio(filename):
     try:
@@ -13,7 +7,7 @@ def read_portfolio(filename):
         portfolio = []
 
         for row in rows:
-            symbol = (row[0], int(row[1]), float(row[2]))
+            symbol = {headers[0]: row[0], headers[1]: int(row[1]), headers[2]: float(row[2])}
             portfolio.append(symbol)
     except:
         print("Can't read file", filename)
@@ -27,7 +21,7 @@ def read_prices(filename):
         prices = []
         for row in rows:
             if len(row) > 0:
-                price = (row[0], float(row[1]))
+                price = {'name': row[0], 'price': float(row[1])}
                 prices.append(price)
     except:
         print("Can't read price file", filename)
@@ -35,13 +29,8 @@ def read_prices(filename):
 
 
 def make_report(portfolio, prices):
-    report = []
     for price in prices:
-        print(price)
         for share in portfolio:
-            print(share)
-            if price[0] == share[0]:
-                print(price[0])
-                change = share[2] - price[1]
-                report.append((share[0], share[1], share[2], change))
-    return report
+            if price['name'] == share['name']:
+                share['change'] = share['price'] - price['price']
+    return portfolio
